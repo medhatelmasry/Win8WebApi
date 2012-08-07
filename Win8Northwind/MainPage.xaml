@@ -1,0 +1,106 @@
+﻿<Page
+    x:Class="Win8Northwind.MainPage"
+    IsTabStop="false"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cat="using:Win8Northwind.Model.Category"
+    xmlns:edit="using:Win8Northwind.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=cat:CategoryViewModel, IsDesignTimeCreatable=True}">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Web API Client"
+                   Margin="116,0,0,50"
+                   Style="{StaticResource PageHeaderTextStyle}" />
+        <ScrollViewer x:Name="itemGridScrollViewer"
+                      AutomationProperties.AutomationId="ItemGridScrollViewer"
+                      Grid.Row="1"
+                      Margin="0,-3,0,0"
+                      Style="{StaticResource HorizontalScrollViewerStyle}">
+            <GridView ItemsSource="{Binding CustomCategories, Mode=TwoWay}"
+                      SelectedItem="{Binding Selected, Mode=TwoWay}"
+                      Margin="116,0,0,0"
+                      Grid.Row="1">
+                <TransitionCollection>
+                    <ContentThemeTransition HorizontalOffset="-500"></ContentThemeTransition>
+                    <AddDeleteThemeTransition></AddDeleteThemeTransition>
+                    <EntranceThemeTransition IsStaggeringEnabled="True" FromHorizontalOffset="-500"></EntranceThemeTransition>
+                </TransitionCollection>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="200"
+                              Width="330"
+                              Background="#FF282828"
+                              Margin="20,10,20,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="67*" />
+                                <ColumnDefinition Width="233*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding CategoryId}"
+                                       Foreground="#FF9191FF"
+                                       Margin="2" />
+                            <TextBlock Text="{Binding CategoryName}"
+                                       Grid.Row="1"
+                                       FontSize="22"
+                                       Grid.Column="1"
+                                       Margin="2" />
+                            <TextBlock Text="{Binding Description}"
+                                       Grid.Row="2"
+                                       FontSize="16"
+                                       Foreground="#FFF79E33"
+                                       Grid.Column="1"
+                                       Margin="2" />
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </ScrollViewer>
+        <edit:CategoryEditor Shown="{Binding Editing, Mode=TwoWay}"
+                            x:Name="Editor"
+                            Accepted="EditorAccepted"
+                            Grid.Row="0"
+                            Grid.RowSpan="10"
+                            d:IsHidden="False" />
+    </Grid>
+    <Page.BottomAppBar>
+        <AppBar HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Height="88"
+                VerticalContentAlignment="Stretch" x:Name="appBar">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal" />
+                <StackPanel Orientation="Horizontal" >
+                    <Button HorizontalAlignment="Stretch"
+                            Style="{StaticResource AddAppBarButtonStyle}"
+                            Width="75"
+                            Command="{Binding AddCommand}" />
+                    <Button HorizontalAlignment="Stretch"
+                            Style="{StaticResource EditAppBarButtonStyle}"
+                            Width="75"
+                            Command="{Binding EditCommand}" />
+                    <Button HorizontalAlignment="Stretch"
+                            Style="{StaticResource DeleteAppBarButtonStyle}"
+                            Width="75"
+                            Command="{Binding DeleteCommand}" />
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
+</Page>
